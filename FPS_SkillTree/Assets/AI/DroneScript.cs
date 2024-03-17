@@ -11,12 +11,16 @@ public class DroneScript : MonoBehaviour
     private bool canScan;
 
     //Raycasts
-    public float rayDistance;
+    public float rayDistanceRatio;
+    public float rayDistanceMin;
+    public float rayDistanceMax;
+    private float rayDistance;
     public LayerMask layerMask;
     public float subdivision;
     private RaycastHit rayHit;
     public float raycastNumber;
     private List<Vector3> rayList;
+    private List<float> distanceList;
     private Vector3 directionUnit;
     private Vector3 direction;
 
@@ -24,14 +28,26 @@ public class DroneScript : MonoBehaviour
     private Rigidbody rb;
     public float horizontalSpeed;
     public float verticalSpeed;
+    public float speedRatio;
+    private float speedMultiplicator;
     private Vector3 moveDirection;
+
+    //Rotation
+    private Vector3 lookPoint;
+
+    //Shoot
+    public List<GameObject> socketList;
+    public GameObject bullet;
 
     private void Awake()
     {
         rb = this.GetComponent<Rigidbody>();
-        rayList = new List<Vector3> ();
+        rayList = new List<Vector3>();
+        distanceList = new List<float>();
         direction = this.transform.right;
         scannerAnimator = scanner.GetComponent<Animator>();
+        //socketList = new List<GameObject>();
+
     }
 
     // Start is called before the first frame update
@@ -52,8 +68,12 @@ public class DroneScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //modify rayDistance in relation to the velocity in order to give anticipation movement
+        rayDistance = Mathf.Clamp(rb.velocity.magnitude * rayDistanceRatio, rayDistanceMin, rayDistanceMax);
         detection();
         move();
+        look();
+        shoot();
     }
 
     public void detection()
@@ -80,7 +100,7 @@ public class DroneScript : MonoBehaviour
                 
             }
         }
-        //moyenne des raycast verts
+        //moyenne des raycast noirs
 
         if(rayList == null)
         {
@@ -89,8 +109,11 @@ public class DroneScript : MonoBehaviour
         else
         {
             moveDirection = new Vector3(rayList.Average(x => x.x), rayList.Average(x => x.y), rayList.Average(x => x.z)).normalized;
-            //moveDirection = (rayList.Aggregate(Vector3.zero, (acc, v) => acc + v) / rayList.Count).normalized;
-            //Debug.Log(moveDirection);
+            /*speedMultiplicator = distanceList.Average();
+            speedMultiplicator = (speedMultiplicator);
+            horizontalSpeed /= speedMultiplicator;
+            verticalSpeed /= speedMultiplicator;
+            distanceList.Clear();*/
             rayList.Clear();
         }
 
@@ -101,6 +124,7 @@ public class DroneScript : MonoBehaviour
         if (Physics.Raycast(new(this.transform.position, direction.normalized * rayDistance), out rayHit, rayDistance, layerMask))
         {
             directionUnit = (rayHit.normal);
+            //distanceList.Add(Mathf.Clamp(rayHit.distance, -1, 1));
             rayList.Add(new Vector3(directionUnit.x, directionUnit.y, directionUnit.z));
             Debug.DrawRay(this.transform.position,direction.normalized * rayDistance, Color.green);
             Debug.DrawRay(rayHit.point, rayHit.normal * 2, Color.black);
@@ -121,6 +145,24 @@ public class DroneScript : MonoBehaviour
     public void scan()
     {
         scannerAnimator.SetTrigger("Scan");
+    }
+
+    public void look()
+    {
+        if(rb.velocity.magnitude > 1)
+        {
+            rb.transform.rotation = Quaternion.LookRotation(rb.velocity, transform.up);
+        }
+
+    }
+
+    public void shoot()
+    {
+        foreach(GameObject gameObject in socketList)
+        {
+            Instantiate(bullet, gameObject.transform.position , Quaternion.identity);
+            
+        }
     }
 
 }
