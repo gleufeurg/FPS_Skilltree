@@ -5,6 +5,10 @@ using System.Linq;
 
 public class DroneScript : MonoBehaviour
 {
+    //Scanner
+    public GameObject scanner;
+    private Animator scannerAnimator;
+    private bool canScan;
 
     //Raycasts
     public float rayDistance;
@@ -27,18 +31,23 @@ public class DroneScript : MonoBehaviour
         rb = this.GetComponent<Rigidbody>();
         rayList = new List<Vector3> ();
         direction = this.transform.right;
+        scannerAnimator = scanner.GetComponent<Animator>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        canScan = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (canScan == true )
+        {
+            scan();
+            canScan = false;
+        }
     }
 
     private void FixedUpdate()
@@ -107,6 +116,11 @@ public class DroneScript : MonoBehaviour
         //need to add increase speed in relation to the distance to the closest hit
         rb.AddForce(moveDirection.x * horizontalSpeed, moveDirection.y * verticalSpeed, moveDirection.z * horizontalSpeed, ForceMode.Force);
         Debug.DrawRay(this.transform.position,new Vector3 (moveDirection.x * horizontalSpeed, moveDirection.y * verticalSpeed, moveDirection.z * horizontalSpeed), Color.white);
+    }
+
+    public void scan()
+    {
+        scannerAnimator.SetTrigger("Scan");
     }
 
 }

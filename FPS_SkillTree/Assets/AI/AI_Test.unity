@@ -1278,6 +1278,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2036369166 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1239742093848014703, guid: 819052046bc7b5347b426bc6df99724b,
+    type: 3}
+  m_PrefabInstance: {fileID: 2430409737129253837}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2430409737129253837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1286,6 +1292,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1465456017957822858, guid: 819052046bc7b5347b426bc6df99724b,
+        type: 3}
+      propertyPath: scanner
+      value: 
+      objectReference: {fileID: 2036369166}
     - target: {fileID: 5360984274770051961, guid: 819052046bc7b5347b426bc6df99724b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1342,7 +1353,8 @@ PrefabInstance:
       value: Drone
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6635803969015711366, guid: 819052046bc7b5347b426bc6df99724b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 819052046bc7b5347b426bc6df99724b, type: 3}
