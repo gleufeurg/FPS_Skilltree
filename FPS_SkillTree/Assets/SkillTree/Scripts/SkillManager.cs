@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
-public struct SkillData
+public class SkillData
 {
     public string Name;
     public int Order;
@@ -27,6 +27,8 @@ public class SkillManager : MonoBehaviour
 {
     public TextAsset skillDataCSV; // The CSV file to load
     private List<SkillData> skillList = new List<SkillData>();
+
+    [HideInInspector] public string skillNameToSearch = "Test"; // The default skill name to search
 
     void Start()
     {
@@ -61,7 +63,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    SkillData FindSkillByName(string name)
+    public SkillData FindSkillByName(string name)
     {
         return skillList.FirstOrDefault(skill => skill.Name == name);
     }

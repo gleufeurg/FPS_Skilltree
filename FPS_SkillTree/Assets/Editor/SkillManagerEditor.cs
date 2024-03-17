@@ -12,23 +12,33 @@ public class SkillManagerEditor : Editor
 
         GUILayout.Space(10);
 
-        if (GUILayout.Button("Load Skills from CSV"))
+        GUILayout.Label("Search Skill by Name", EditorStyles.boldLabel);
+
+        skillManager.skillNameToSearch = EditorGUILayout.TextField("Skill Name to Search:", skillManager.skillNameToSearch);
+
+        GUILayout.Space(5);
+
+        if (GUILayout.Button("Search Skill by Name"))
         {
-            skillManager.LoadSkillsFromCSV();
+            SkillData foundSkill = skillManager.FindSkillByName(skillManager.skillNameToSearch);
+
+            if (foundSkill != null)
+            {
+                Debug.Log($"Skill found - Name: {foundSkill.Name}, Order: {foundSkill.Order}, Cost: {foundSkill.Cost}, Type: {foundSkill.Type}, Description: {foundSkill.Description}");
+            }
+            else
+            {
+                Debug.Log($"Skill with name '{skillManager.skillNameToSearch}' not found.");
+            }
         }
 
         GUILayout.Space(10);
 
-        if (GUILayout.Button("Print Skill Tree"))
+        if (GUILayout.Button("Print Entire Skill Tree"))
         {
-            SkillTreeBuilder treeBuilder = FindObjectOfType<SkillTreeBuilder>();
-            if (treeBuilder != null)
+            foreach (SkillData skill in skillManager.GetAllSkills())
             {
-                treeBuilder.PrintSkillTree();
-            }
-            else
-            {
-                Debug.LogError("SkillTreeBuilder not found in the scene. Make sure it is attached to a GameObject.");
+                Debug.Log($"Skill - Name: {skill.Name}, Order: {skill.Order}, Cost: {skill.Cost}, Type: {skill.Type}, Description: {skill.Description}");
             }
         }
     }
