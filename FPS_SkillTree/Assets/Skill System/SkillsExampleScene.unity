@@ -1408,7 +1408,7 @@ MonoBehaviour:
     m_Bits: 8
   jumpKey: 32
   airMultiplier: 0.35
-  jumpForce: 5
+  jumpForce: 1
   readyToJump: 0
   rb: {fileID: 1705510759}
   orientation: {fileID: 1861892617}
