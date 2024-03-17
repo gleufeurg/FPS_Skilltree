@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddForce(transform.right * speed, ForceMode.Acceleration);
+        rb.AddForce(transform.forward * speed, ForceMode.Acceleration);
     }
 
     private void OnCollisionEnter(Collision collision)

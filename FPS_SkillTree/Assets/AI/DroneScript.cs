@@ -34,10 +34,21 @@ public class DroneScript : MonoBehaviour
 
     //Rotation
     private Vector3 lookPoint;
+    public float rotationSpeed;
+    public GameObject rotatingComponent;
 
     //Shoot
     public List<GameObject> socketList;
     public GameObject bullet;
+    private bool canShoot;
+
+    //chase
+    private Vector3 chaseDirection;
+    private GameObject playerRef;
+    public float chaseSpeed;
+    private bool canChase;
+    public Collider rangeChase;
+    private Vector3 lastPosition;
 
     private void Awake()
     {
@@ -73,7 +84,13 @@ public class DroneScript : MonoBehaviour
         detection();
         move();
         look();
-        shoot();
+
+        if (canChase == true)
+        {
+            chase();
+
+        }
+
     }
 
     public void detection()
@@ -138,8 +155,18 @@ public class DroneScript : MonoBehaviour
     public void move()
     {
         //need to add increase speed in relation to the distance to the closest hit
-        rb.AddForce(moveDirection.x * horizontalSpeed, moveDirection.y * verticalSpeed, moveDirection.z * horizontalSpeed, ForceMode.Force);
-        Debug.DrawRay(this.transform.position,new Vector3 (moveDirection.x * horizontalSpeed, moveDirection.y * verticalSpeed, moveDirection.z * horizontalSpeed), Color.white);
+        if(canChase == true)
+        {
+            
+            rb.AddForce(moveDirection.x * horizontalSpeed + chaseDirection.x * chaseSpeed, moveDirection.y * verticalSpeed + chaseDirection.y * chaseSpeed, moveDirection.z * horizontalSpeed + chaseDirection.z * chaseSpeed, ForceMode.Force);
+            Debug.DrawRay(this.transform.position, new Vector3(moveDirection.x * horizontalSpeed + chaseDirection.x * chaseSpeed, moveDirection.y * verticalSpeed + chaseDirection.y * chaseSpeed, moveDirection.z * horizontalSpeed + chaseDirection.z * chaseSpeed), Color.magenta);
+        }
+        else
+        {
+            rb.AddForce(moveDirection.x * horizontalSpeed, moveDirection.y * verticalSpeed, moveDirection.z * horizontalSpeed, ForceMode.Force);
+            Debug.DrawRay(this.transform.position, new Vector3(moveDirection.x * horizontalSpeed, moveDirection.y * verticalSpeed, moveDirection.z * horizontalSpeed), Color.white);
+        }
+        
     }
 
     public void scan()
@@ -147,22 +174,65 @@ public class DroneScript : MonoBehaviour
         scannerAnimator.SetTrigger("Scan");
     }
 
+    public void chase()
+    {
+        chaseDirection =  playerRef.transform.position - transform.position;
+
+        //rb.AddForce(chaseDirection * chaseSpeed, ForceMode.Force);
+    }
     public void look()
     {
-        if(rb.velocity.magnitude > 1)
+        rotatingComponent.transform.LookAt(playerRef.transform, rotatingComponent.transform.up);
         {
-            rb.transform.rotation = Quaternion.LookRotation(rb.velocity, transform.up);
+            
+           // rb.transform.rotation = Quaternion.LookRotation(rb.velocity, transform.up);
+        }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            canChase = true;
+            playerRef = other.gameObject;
+            canShoot = true;
+            shoot();
+            Debug.Log("Chase");
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            lastPosition = playerRef.transform.position;
+            canShoot = false;
+            chaseDirection = lastPosition;
+            Debug.Log("Chase");
         }
 
     }
 
     public void shoot()
     {
-        foreach(GameObject gameObject in socketList)
+        if(canShoot == true)
         {
-            Instantiate(bullet, gameObject.transform.position , Quaternion.identity);
-            
+            foreach (GameObject gameObject in socketList)
+            {
+                Instantiate(bullet, gameObject.transform.position, gameObject.transform.rotation);
+
+            }
+            StartCoroutine(shootCooldown());
         }
+
+    }
+    IEnumerator shootCooldown()
+    {
+        yield return new WaitForSeconds(0.5f);
+        shoot();
+       
+        
     }
 
 }
