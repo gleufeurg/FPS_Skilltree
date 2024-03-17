@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
+[System.Serializable]
 public struct SkillData
 {
     public string Name;
@@ -9,6 +10,7 @@ public struct SkillData
     public float Cost;
     public string Type;
     public string Description;
+    public List<SkillData> Children;
 
     public SkillData(string name, int order, float cost, string type, string description)
     {
@@ -17,6 +19,7 @@ public struct SkillData
         Cost = cost;
         Type = type;
         Description = description;
+        Children = new List<SkillData>();
     }
 }
 
@@ -25,36 +28,12 @@ public class SkillManager : MonoBehaviour
     public TextAsset skillDataCSV; // The CSV file to load
     private List<SkillData> skillList = new List<SkillData>();
 
-    public bool printSkillInfo = true; // Control whether to print skill information
-    public string skillNameToSearch = "Skill2"; // The default skill name to search
-
     void Start()
     {
-        StartSkillManager();
-    }
-
-    public void StartSkillManager()
-    {
         LoadSkillsFromCSV();
-
-        // Example: Finding skill data by name
-        SkillData foundSkill = FindSkillByName(skillNameToSearch);
-
-        if (foundSkill.Name != null && printSkillInfo)
-        {
-            Debug.Log($"Skill found - Name: {foundSkill.Name}, Order: {foundSkill.Order}, Cost: {foundSkill.Cost}, Type: {foundSkill.Type}, Description: {foundSkill.Description}");
-        }
-        else if (!printSkillInfo)
-        {
-            Debug.Log("Skill information printing is disabled.");
-        }
-        else
-        {
-            Debug.Log($"Skill with name '{skillNameToSearch}' not found.");
-        }
     }
 
-    void LoadSkillsFromCSV()
+    public void LoadSkillsFromCSV()
     {
         if (skillDataCSV == null)
         {
@@ -114,5 +93,11 @@ public class SkillManager : MonoBehaviour
         fields.Add(field); // Add the last field
 
         return fields.ToArray();
+    }
+
+    // Method to get all skills
+    public List<SkillData> GetAllSkills()
+    {
+        return skillList;
     }
 }
