@@ -139,8 +139,6 @@ Transform:
   - {fileID: 1909423374155167189}
   - {fileID: 6273699366729074173}
   - {fileID: 6305893432798065998}
-  - {fileID: 8425434399652545460}
-  - {fileID: 1019294358096369794}
   m_Father: {fileID: 5360984274770051961}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1874277751057187325
@@ -168,69 +166,7 @@ Transform:
   m_GameObject: {fileID: 1874277751057187325}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1064267725568157281}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5938650584975183058
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8425434399652545460}
-  m_Layer: 6
-  m_Name: SocketShoot (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8425434399652545460
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5938650584975183058}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1064267725568157281}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6149341612027295225
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1019294358096369794}
-  m_Layer: 6
-  m_Name: SocketShoot (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1019294358096369794
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6149341612027295225}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0.9, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -261,7 +197,7 @@ Transform:
   m_GameObject: {fileID: 6789489885223076700}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalPosition: {x: -0.844, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -432,14 +368,18 @@ MonoBehaviour:
   horizontalSpeed: 15
   verticalSpeed: 45
   speedRatio: 0.1
+  acceptanceRadius: 5
   rotationSpeed: 25
   rotatingComponent: {fileID: 1386599190718730908}
   socketList:
   - {fileID: 6789489885223076700}
   - {fileID: 1874277751057187325}
-  - {fileID: 5938650584975183058}
-  - {fileID: 6149341612027295225}
   bullet: {fileID: 1125147522014702512, guid: 350048e72573c314ea5672bdaa554c57, type: 3}
+  rafaleRateMin: 1
+  rafaleRateMax: 3
+  fireRateMin: 0.05
+  fireRateMax: 0.25
+  fireCount: 3
   chaseSpeed: 3
   rangeChase: {fileID: 0}
 --- !u!135 &3827356948272878950

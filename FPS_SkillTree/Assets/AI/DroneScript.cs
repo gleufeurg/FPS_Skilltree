@@ -31,6 +31,7 @@ public class DroneScript : MonoBehaviour
     public float speedRatio;
     private float speedMultiplicator;
     private Vector3 moveDirection;
+    public float acceptanceRadius;
 
     //Rotation
     private Vector3 lookPoint;
@@ -41,6 +42,13 @@ public class DroneScript : MonoBehaviour
     public List<GameObject> socketList;
     public GameObject bullet;
     private bool canShoot;
+    public float rafaleRateMin;
+    public float rafaleRateMax;
+    public float fireRateMin;
+    public float fireRateMax;
+    public int fireCount;
+    private int currentFireCount;
+
 
     //chase
     private Vector3 chaseDirection;
@@ -49,6 +57,7 @@ public class DroneScript : MonoBehaviour
     private bool canChase;
     public Collider rangeChase;
     private Vector3 lastPosition;
+    private bool detected;
 
     private void Awake()
     {
@@ -70,11 +79,11 @@ public class DroneScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canScan == true )
+        /*if (canScan == true )
         {
             scan();
             canScan = false;
-        }
+        }*/
     }
 
     private void FixedUpdate()
@@ -88,7 +97,7 @@ public class DroneScript : MonoBehaviour
         if (canChase == true)
         {
             chase();
-
+            
         }
 
     }
@@ -197,7 +206,7 @@ public class DroneScript : MonoBehaviour
             canChase = true;
             playerRef = other.gameObject;
             canShoot = true;
-            shoot();
+            StartCoroutine(rafaleCooldown());
             Debug.Log("Chase");
         }
     }
@@ -206,6 +215,7 @@ public class DroneScript : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            //canChase = false;
             lastPosition = playerRef.transform.position;
             canShoot = false;
             chaseDirection = lastPosition;
@@ -216,22 +226,35 @@ public class DroneScript : MonoBehaviour
 
     public void shoot()
     {
-        if(canShoot == true)
+        var socket = socketList[Random.Range(0, socketList.Count)];
+        Instantiate(bullet, socket.transform.position, socket.transform.rotation);
+        if(currentFireCount < fireCount - 1)
         {
-            foreach (GameObject gameObject in socketList)
-            {
-                Instantiate(bullet, gameObject.transform.position, gameObject.transform.rotation);
-
-            }
+            currentFireCount ++;
             StartCoroutine(shootCooldown());
         }
+        else
+        {
+            currentFireCount = 0;
+            StartCoroutine(rafaleCooldown());
+        }
+
 
     }
     IEnumerator shootCooldown()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(Random.Range(fireRateMin, fireRateMax));
         shoot();
-       
+        
+    }
+
+    IEnumerator rafaleCooldown()
+    {
+        yield return new WaitForSeconds(Random.Range(rafaleRateMin, rafaleRateMax));
+        if(canShoot == true)
+        {
+            shoot();
+        }
         
     }
 
