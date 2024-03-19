@@ -12,4 +12,5 @@ public class PlayerInUse : PlayerSkillState
 
     public override void UpdateState(SkillStateManager skill) { }
     public override void ExitState(SkillStateManager skill) { }
+    public override void UseSKill() { }
 }

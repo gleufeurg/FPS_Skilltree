@@ -6,5 +6,5 @@ using UnityEngine;
 //Ultra Generic Class, used by : StartSkillStateManager, GameTreeSkillStateManager, PlayerSkillStateManager
 public class SkillStateManager : MonoBehaviour
 {
-
+    
 }

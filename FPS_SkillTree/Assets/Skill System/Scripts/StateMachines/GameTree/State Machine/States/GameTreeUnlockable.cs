@@ -7,6 +7,9 @@ public class GameTreeUnlockable : GameTreeSkillState
         Debug.Log("Try to unlock me");
     }
 
-    public override void UpdateState(SkillStateManager skill) { }
+    public override void UpdateState(SkillStateManager skill)
+    {
+
+    }
     public override void ExitState(SkillStateManager skill) { }
 }
